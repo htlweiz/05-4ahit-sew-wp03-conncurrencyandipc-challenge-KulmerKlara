@@ -5,12 +5,14 @@ namespace A1_ZweiThreadsZaehlenWinner;
 
 class Program
 {
-   
+
+    static int counter = 0;
+    static int counterDown = 100;
+
+    static object lockObj = new Object();
     
     public static void Main(string[] args)
     {
-        Console.WriteLine("Übung 1: Zwei Threads – Zählen & Winner");
-
         Thread threadA = new Thread(CountUpThreadA);
         Thread threadB = new Thread(CountDownThreadB);
 
@@ -18,27 +20,44 @@ class Program
         threadB.Start();
 
         threadA.Join();
-        threadB.Join();      
-        
+        threadB.Join();
     }
     
     private static void CountUpThreadA()
     {
-        int miliseconds = 100;
-        for (int i = 1; i <= 100; i++)
+        while (counter < 100)
         {
-            Console.WriteLine($"Thread A: {i}");
-            Thread.Sleep(miliseconds);
-        }   
+            lock (lockObj)
+            {
+                if (counter == counterDown)
+                {
+                    if(counter >= counterDown)
+                    {
+                        Console.WriteLine()
+                    }
+                    break;
+                }
+                counter++;
+            }
+            Thread.Sleep(100);
+        }
     }
     
     private static void CountDownThreadB()
     {
-        int miliseconds = 100;
-        for (int i = 100; i >= 1; i--)
+        while (counterDown > 0)
         {
-            Console.WriteLine($"Thread B: {i}");
-            Thread.Sleep(miliseconds);
-        }       
+            lock (lockObj)
+            {
+                if (counter == counterDown)
+                {
+                    break;
+                }
+                counterDown--;
+            }
+            Thread.Sleep(100);
+        }
     }
 }
+
+ 
