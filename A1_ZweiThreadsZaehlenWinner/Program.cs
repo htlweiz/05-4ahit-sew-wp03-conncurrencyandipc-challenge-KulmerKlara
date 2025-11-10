@@ -5,11 +5,6 @@ namespace A1_ZweiThreadsZaehlenWinner;
 
 class Program
 {
-
-    static int counter = 0;
-    static int counterDown = 100;
-
-    static object lockObj = new Object();
     
     public static void Main(string[] args)
     {
@@ -21,42 +16,40 @@ class Program
 
         threadA.Join();
         threadB.Join();
+
+        Console.WriteLine(countA);
+        if (countA == 50)
+        {
+            Console.WriteLine("Unentschieden!");
+        }
+        else if (countA < 50)
+        {
+            Console.WriteLine("Thread A gewinnt!");
+        }
+        else if (countA > 50)
+        {
+            Console.WriteLine("Thread B gewinnt!");
+        }
     }
     
     private static void CountUpThreadA()
     {
-        while (counter < 100)
+        int miliseconds = 100;
+        for (int i = 1; i <= 100; i++)
         {
-            lock (lockObj)
-            {
-                if (counter == counterDown)
-                {
-                    if(counter >= counterDown)
-                    {
-                        Console.WriteLine()
-                    }
-                    break;
-                }
-                counter++;
-            }
-            Thread.Sleep(100);
-        }
+            Console.WriteLine($"Thread A: {i}");
+            Thread.Sleep(miliseconds);
+        }   
     }
     
     private static void CountDownThreadB()
     {
-        while (counterDown > 0)
+        int miliseconds = 100;
+        for (int i = 100; i >= 1; i--)
         {
-            lock (lockObj)
-            {
-                if (counter == counterDown)
-                {
-                    break;
-                }
-                counterDown--;
-            }
-            Thread.Sleep(100);
-        }
+            Console.WriteLine($"Thread B: {i}");
+            Thread.Sleep(miliseconds);
+        }               
     }
 }
 

@@ -21,18 +21,18 @@ class Program
             }
 
             foreach (Thread t in threads)
+            {
                 t.Join();
+            }
 
             Console.WriteLine($"\nEndkontostand: {account.GetBalance()} EUR");
         }
         
         private static void PerformBankOperations(BankAccount account)
         {
-            for (int i = 0; i < 10; i++)
-            {
-                account.Withdraw(100);  
-                account.Deposit(150);   
-            }
+            account.Withdraw(100);  
+            Thread.Sleep(100);
+            account.Deposit(150);   
         }
     }
 
